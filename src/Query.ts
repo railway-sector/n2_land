@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable no-unsafe-optional-chaining */
 
 import {
@@ -34,6 +35,9 @@ import {
   structureStatusField,
   superurgent_items,
 } from "./uniqueValues";
+import FeatureFilter from "@arcgis/core/layers/support/FeatureFilter";
+import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
+import Query from "@arcgis/core/rest/support/Query";
 
 // get last date of month
 export function lastDateOfMonth(date: Date) {
@@ -824,3 +828,67 @@ export function highlightRemove() {
     highlight.remove();
   }
 }
+
+// Highlight selected utility feature in the Chart
+export const highlightSelectedUtil = (
+  featureLayer: any,
+  qExpression: any,
+  view: any,
+) => {
+  const query = featureLayer.createQuery();
+  query.where = qExpression;
+  let highlightSelect: any;
+
+  view?.whenLayerView(featureLayer).then((layerView: any) => {
+    featureLayer?.queryObjectIds(query).then((results: any) => {
+      const objID = results;
+
+      const queryExt = new Query({
+        objectIds: objID,
+      });
+
+      try {
+        featureLayer?.queryExtent(queryExt).then((result: any) => {
+          if (result?.extent) {
+            view?.goTo(result.extent);
+          }
+        });
+      } catch (error) {
+        console.error("Error querying extent for point layer:", error);
+      }
+
+      highlightSelect && highlightSelect.remove();
+      highlightSelect = layerView.highlight(objID);
+    });
+
+    layerView.filter = new FeatureFilter({
+      where: qExpression,
+    });
+
+    // For initial state, we need to add this
+    view?.on("click", () => {
+      layerView.filter = new FeatureFilter({
+        where: undefined,
+      });
+      highlightSelect && highlightSelect.remove();
+    });
+  });
+};
+
+type layerViewQueryProps = {
+  pointLayer1?: FeatureLayer;
+  pointLayer2?: FeatureLayer;
+  lineLayer1?: FeatureLayer;
+  lineLayer2?: FeatureLayer;
+  polygonLayer?: FeatureLayer;
+  qExpression?: any;
+  view: any;
+};
+
+export const polygonViewQueryFeatureHighlight = ({
+  polygonLayer,
+  qExpression,
+  view,
+}: layerViewQueryProps) => {
+  highlightSelectedUtil(polygonLayer, qExpression, view);
+};

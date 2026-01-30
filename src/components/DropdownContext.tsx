@@ -15,10 +15,6 @@ export default function DropdownData() {
   const [barangaySelected, setBarangaySelected] = useState({ name: "" });
 
   useEffect(() => {
-    // getMuniciaplityBarangayPair().then((response: any) => {
-    //   setInitMunicipalBarangay(response);
-    // });
-
     const dropdownData = new GenerateDropdownData(
       [lotLayer],
       ["Municipality", "Barangay"],

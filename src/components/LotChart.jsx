@@ -16,6 +16,7 @@ import {
   generateTotalAffectedArea,
   highlightLot,
   highlightRemove,
+  polygonViewQueryFeatureHighlight,
   thousands_separators,
   zoomToLayer,
 } from "../Query";
@@ -271,51 +272,13 @@ const LotChart = () => {
       const Category = Selected.category;
       const find = statusLotQuery.find((emp) => emp.category === Category);
       const statusSelected = find?.value;
+      const qExpression = `Municipality = '${municipals}' AND ${lotStatusField} = ${statusSelected}`;
 
-      let highlightSelect;
-
-      const query = lotLayer.createQuery();
-
-      arcgisScene?.whenLayerView(lotLayer).then((layerView) => {
-        //chartLayerView = layerView;
-
-        lotLayer.queryFeatures(query).then(function (results) {
-          const RESULT_LENGTH = results.features;
-          const ROW_N = RESULT_LENGTH.length;
-
-          const objID = [];
-          for (let i = 0; i < ROW_N; i++) {
-            const obj = results.features[i].attributes.OBJECTID;
-            objID.push(obj);
-          }
-
-          const queryExt = new Query({
-            objectIds: objID,
-          });
-
-          lotLayer.queryExtent(queryExt).then(function (result) {
-            if (result.extent) {
-              arcgisScene?.goTo(result.extent);
-            }
-          });
-
-          if (highlightSelect) {
-            highlightSelect.remove();
-          }
-          highlightSelect = layerView.highlight(objID);
-
-          arcgisScene?.view.on("click", function () {
-            layerView.filter = new FeatureFilter({
-              where: undefined,
-            });
-            highlightSelect.remove();
-          });
-        }); // End of queryFeatures
-
-        layerView.filter = new FeatureFilter({
-          where: lotStatusField + " = " + statusSelected,
-        });
-      }); // End of view.whenLayerView
+      polygonViewQueryFeatureHighlight({
+        polygonLayer: lotLayer,
+        qExpression: qExpression,
+        view: arcgisScene?.view,
+      });
     });
 
     pieSeries.data.setAll(lotData);
