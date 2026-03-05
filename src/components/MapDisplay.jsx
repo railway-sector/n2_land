@@ -24,7 +24,6 @@ import {
   candidate_lot_layer,
 } from "../layers";
 import "@esri/calcite-components/dist/components/calcite-button";
-import { highlightLot } from "../Query";
 
 function MapDisplay() {
   const [sceneView, setSceneView] = useState();
@@ -41,7 +40,7 @@ function MapDisplay() {
       arcgisScene.map.add(alignmentGroupLayer);
       arcgisScene.map.add(stationLayer);
 
-      highlightLot(candidate_lot_layer, arcgisScene);
+      // highlightLot(candidate_lot_layer, arcgisScene);
 
       arcgisSearch.sources = [
         {
