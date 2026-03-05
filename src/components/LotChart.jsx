@@ -113,32 +113,32 @@ const LotChart = () => {
   const querySuperUrgentMunicipalBarangay =
     querySuperUrgentMunicipality + " AND " + queryBarangay;
 
-  if (superUrgentSelected === superurgent_items[0]) {
-    if (!municipal) {
-      lotLayer.definitionExpression = "1=1";
-      handedOverLotLayer.definitionExpression = "1=1";
-    } else if (municipal && !barangay) {
-      lotLayer.definitionExpression = queryMunicipality;
-      handedOverLotLayer.definitionExpression = queryMunicipality;
-    } else if (municipal && barangay) {
-      lotLayer.definitionExpression = queryMunicipalBarangay;
-      handedOverLotLayer.definitionExpression = queryMunicipalBarangay;
-    }
-  } else if (superUrgentSelected === superurgent_items[1]) {
-    if (!municipal) {
-      lotLayer.definitionExpression = querySuperUrgent;
-      handedOverLotLayer.definitionExpression = querySuperUrgent;
-    } else if (municipal && !barangay) {
-      lotLayer.definitionExpression = querySuperUrgentMunicipality;
-      handedOverLotLayer.definitionExpression = querySuperUrgentMunicipality;
-    } else if (municipal && barangay) {
-      lotLayer.definitionExpression = querySuperUrgentMunicipalBarangay;
-      handedOverLotLayer.definitionExpression =
-        querySuperUrgentMunicipalBarangay;
-    }
-  }
-
   useEffect(() => {
+    if (superUrgentSelected === superurgent_items[0]) {
+      if (!municipal) {
+        lotLayer.definitionExpression = "1=1";
+        handedOverLotLayer.definitionExpression = "1=1";
+      } else if (municipal && !barangay) {
+        lotLayer.definitionExpression = queryMunicipality;
+        handedOverLotLayer.definitionExpression = queryMunicipality;
+      } else if (municipal && barangay) {
+        lotLayer.definitionExpression = queryMunicipalBarangay;
+        handedOverLotLayer.definitionExpression = queryMunicipalBarangay;
+      }
+    } else if (superUrgentSelected === superurgent_items[1]) {
+      if (!municipal) {
+        lotLayer.definitionExpression = querySuperUrgent;
+        handedOverLotLayer.definitionExpression = querySuperUrgent;
+      } else if (municipal && !barangay) {
+        lotLayer.definitionExpression = querySuperUrgentMunicipality;
+        handedOverLotLayer.definitionExpression = querySuperUrgentMunicipality;
+      } else if (municipal && barangay) {
+        lotLayer.definitionExpression = querySuperUrgentMunicipalBarangay;
+        handedOverLotLayer.definitionExpression =
+          querySuperUrgentMunicipalBarangay;
+      }
+    }
+
     if (superUrgentSelected === superurgent_items[1]) {
       zoomToLayer(lotLayer, arcgisScene);
       highlightLot(lotLayer, arcgisScene);
@@ -156,6 +156,7 @@ const LotChart = () => {
   }, [handedOverCheckBox]);
 
   useEffect(() => {
+    // lotLayer.definitionExpression = "Status_Date = date '2026-02-13'";
     generateLotData(superUrgentSelected, municipal, barangay).then((result) => {
       setLotData(result);
     });

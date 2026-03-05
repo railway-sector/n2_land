@@ -1,5 +1,9 @@
 import Collection from "@arcgis/core/core/Collection";
 import ActionButton from "@arcgis/core/support/actions/ActionButton";
+import { highlightLot } from "./Query";
+import { candidate_lot_layer } from "./layers";
+
+const arcgisScene = document.querySelector("arcgis-scene");
 
 // Chart width
 export const chart_width = "26vw";
@@ -49,6 +53,7 @@ export const statusLotLabel = [
   "For Notice of Taking",
   "With PTE",
   "For Expropriation",
+  "Harmonized/Optimized",
 ];
 
 export const statusLotNumber = statusLotLabel.map((stat, index) => {
@@ -67,6 +72,7 @@ export const statusLotColor = [
   "#FF5733",
   "#70AD47",
   "#FF0000",
+  "#B2B2B2",
 ];
 
 export const statusLotQuery = statusLotLabel.map((status, index) => {
@@ -304,7 +310,9 @@ export async function defineActions(event) {
   item.title === "NGCP Pole Relocation Tagged Structures" ||
   item.title === "Households" ||
   item.title === "Occupancy (Structure)" ||
-  item.title === "Handed-Over Area"
+  item.title === "Handed-Over Area" ||
+  item.title ===
+    "Candidate Lots of NSCR-Ex Passenger & Freight Line for Optimization"
     ? (item.visible = false)
     : (item.visible = true);
 }

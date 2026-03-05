@@ -98,6 +98,7 @@ export async function generateLotData(
   superurgent: any,
   municipal: any,
   barangay: any,
+  // statusdatefield: any,
 ) {
   // Query
   const queryMunicipality = `${municipalityField} = '` + municipal + "'";

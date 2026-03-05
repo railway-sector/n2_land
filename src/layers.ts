@@ -475,6 +475,40 @@ export const lotLayer = new FeatureLayer({
   },
 });
 
+/* */
+const studiedLotRenderer = new SimpleRenderer({
+  symbol: new SimpleFillSymbol({
+    color: "#808080",
+    style: "horizontal",
+    outline: {
+      // autocasts as new SimpleLineSymbol()
+      color: "#808080", //#DF73FF,
+      width: "6px",
+    },
+  }),
+});
+
+export const candidate_lot_layer = new FeatureLayer({
+  portalItem: {
+    id: "23500954a8d84a46886e76e6e0883a69",
+    portal: {
+      url: "https://gis.railway-sector.com/portal",
+    },
+  },
+  layerId: 4,
+  definitionExpression: "OptLots = 1",
+  labelingInfo: [lotIdLabel],
+  renderer: studiedLotRenderer,
+  popupTemplate: templateLot,
+  title: "Candidate Lots of NSCR-Ex Passenger & Freight Line for Optimization",
+  minScale: 150000,
+  maxScale: 0,
+  //labelsVisible: false,
+  elevationInfo: {
+    mode: "on-the-ground",
+  },
+});
+
 /* Endorsed Lot Layer */
 // Endorsed lot layer
 const endorsedLayerRendererUniqueValueInfos = statusLotEndorsedLabel.map(
@@ -1173,6 +1207,7 @@ export const lotGroupLayer = new GroupLayer({
   layers: [
     endorsedLotLayer,
     lotLayer,
+    candidate_lot_layer,
     pnrLayer,
     accessibleLotAreaLayer,
     handedOverLotLayer,
