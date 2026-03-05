@@ -377,6 +377,7 @@ const LotChart = () => {
       //     : "{valuePercentTotal.formatNumber('#.')}% ({value})";
       // }
       // "[#C9CC3F; fontSize: 12px;][bold]{valuePercentTotal.formatNumber('#.')}% ({value})[/]"
+
       if (target.dataItem) {
         return category === statusLotLabel[0]
           ? "{value}[/]" +
@@ -440,7 +441,17 @@ const LotChart = () => {
                         ) +
                         " m2" +
                         ")"
-                      : "{value}";
+                      : category === statusLotLabel[7]
+                        ? "{value}[/]" +
+                          " (" +
+                          thousands_separators(
+                            affectAreaPie?.find(
+                              (emp) => emp.category === category,
+                            )?.value,
+                          ) +
+                          " m2" +
+                          ")"
+                        : "{value}";
       }
 
       return text;
