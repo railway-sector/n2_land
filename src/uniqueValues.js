@@ -189,8 +189,9 @@ export const statusNloLabel = [
   "For Payment Processing",
   "For Legal Pass",
   "For Appraisal/OtC/Requirements for Other Entitlements",
-  "LBP Account Opening",
+  "For Notice of Taking",
 ];
+
 export const statusNloColor = [
   "#00C5FF",
   "#70AD47",
